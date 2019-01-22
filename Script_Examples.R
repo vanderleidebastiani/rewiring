@@ -82,12 +82,12 @@ h_morph_dist <- as.matrix(vegdist(h_morph, method = "euclidean", na.rm = TRUE)) 
 h_morph_dist
 
 # Probability fussy trait similarity to plant
-Y_pl <- matrix.p1(t(network), pl_morph_dist)$matrix.P
-Y_pl
+Tpl <- t(matrix.p1(t(network), pl_morph_dist)$matrix.P)
+Tpl
 
 # Probability fussy trait similarity to hummingbirds
-Y_h <- matrix.p1(network, h_morph_dist)$matrix.P
-Y_h
+Th <- matrix.p1(network, h_morph_dist)$matrix.P
+Th
 
 ## All equal to one
 one <- network
@@ -101,10 +101,10 @@ MP <- morphological*temporal # Hadamard product
 MP
 
 # Probability fussy trait similarity to hummingbirds and phenological overlap
-TPh <- Y_h*temporal
+ThP <- Th*temporal
 
 # Probability fussy trait similarity to hummingbirds and phenological overlap
-TPpl <- t(Y_pl)*temporal
+TplP <- Tpl*temporal
 
 ### Simule secondary extinctions in networks 
 
@@ -120,43 +120,44 @@ method <- "random"
 method
 
 ## Define method to rewiring
-method.rewiring <- "one.try.single.interaction"
+method.rewiring <- "one.try.single.partner"
 method.rewiring
 
 ## Define the matrices of probability of rewiring
 
 # To plants loss ("lower" participants)
 probabilities.rewiring1 <- abundance_pl # relative abundances of plants
-probabilities.rewiring1
+probabilities.rewiring1 # Probability of choice of a potential partner 
 
 ## Run secondary extinctions with specified parameters (results are list)
+# The argument probabilities.rewiring2 to specify the probabilities of rewiring 
 RES.without.rewiring <- replicate(nrep, one.second.extinct.mod(network, participant = participant, method = method, rewiring = FALSE), simplify = FALSE)
-RES.with.rewiring.MP <- replicate(nrep, one.second.extinct.mod(network, participant = participant, method = method, rewiring = TRUE, probabilities.rewiring1 = probabilities.rewiring1, probabilities.rewiring2 = MP, method.rewiring = method.rewiring), simplify = FALSE)
 RES.with.rewiring.M <- replicate(nrep, one.second.extinct.mod(network, participant = participant, method = method, rewiring = TRUE, probabilities.rewiring1 = probabilities.rewiring1, probabilities.rewiring2 = morphological, method.rewiring = method.rewiring), simplify = FALSE)
 RES.with.rewiring.P <- replicate(nrep, one.second.extinct.mod(network, participant = participant, method = method, rewiring = TRUE, probabilities.rewiring1 = probabilities.rewiring1, probabilities.rewiring2 = temporal, method.rewiring = method.rewiring), simplify = FALSE)
-RES.with.rewiring.TP <- replicate(nrep, one.second.extinct.mod(network, participant = participant, method = method, rewiring = TRUE, probabilities.rewiring1 = probabilities.rewiring1, probabilities.rewiring2 = TPpl, method.rewiring = method.rewiring), simplify = FALSE)
-RES.with.rewiring.ONE <- replicate(nrep, one.second.extinct.mod(network, participant = participant, method = method, rewiring = TRUE, probabilities.rewiring1 = probabilities.rewiring1, probabilities.rewiring2 = one, method.rewiring = method.rewiring), simplify = FALSE)
+RES.with.rewiring.T <- replicate(nrep, one.second.extinct.mod(network, participant = participant, method = method, rewiring = TRUE, probabilities.rewiring1 = probabilities.rewiring1, probabilities.rewiring2 = Tpl, method.rewiring = method.rewiring), simplify = FALSE)
+RES.with.rewiring.MP <- replicate(nrep, one.second.extinct.mod(network, participant = participant, method = method, rewiring = TRUE, probabilities.rewiring1 = probabilities.rewiring1, probabilities.rewiring2 = MP, method.rewiring = method.rewiring), simplify = FALSE)
+RES.with.rewiring.TP <- replicate(nrep, one.second.extinct.mod(network, participant = participant, method = method, rewiring = TRUE, probabilities.rewiring1 = probabilities.rewiring1, probabilities.rewiring2 = TplP, method.rewiring = method.rewiring), simplify = FALSE)
 
 ## Calculates robustness to species extinctions
 RES.robustness.without.rewiring <- sapply(RES.without.rewiring, robustness)
-RES.robustness.with.rewiring.MP <- sapply(RES.with.rewiring.MP, robustness)
 RES.robustness.with.rewiring.M <- sapply(RES.with.rewiring.M, robustness)
 RES.robustness.with.rewiring.P <- sapply(RES.with.rewiring.P, robustness)
+RES.robustness.with.rewiring.T <- sapply(RES.with.rewiring.T, robustness)
+RES.robustness.with.rewiring.MP <- sapply(RES.with.rewiring.MP, robustness)
 RES.robustness.with.rewiring.TP <- sapply(RES.with.rewiring.TP, robustness)
-RES.robustness.with.rewiring.ONE <- sapply(RES.with.rewiring.ONE, robustness)
 
 # Organize the results
 res.robustness <- data.frame(robustness.without.rewiring = RES.robustness.without.rewiring, 
-                             robustness.with.rewiring.MP = RES.robustness.with.rewiring.MP,
                              robustness.with.rewiring.M = RES.robustness.with.rewiring.M,
                              robustness.with.rewiring.P = RES.robustness.with.rewiring.P,
-                             robustness.with.rewiring.TP = RES.robustness.with.rewiring.TP,
-                             robustness.with.rewiring.ONE = RES.robustness.with.rewiring.ONE)
+                             robustness.with.rewiring.T = RES.robustness.with.rewiring.T,
+                             robustness.with.rewiring.MP = RES.robustness.with.rewiring.MP,
+                             robustness.with.rewiring.TP = RES.robustness.with.rewiring.TP)
 res.robustness
 
 # Compute 95% confidence intervals
 res.robustness.summary <- as.data.frame(t(sapply(res.robustness, IC)))
-res.robustness.summary$rewiring <- c("0", "MP", "M", "P", "TP", "1") # add code for rewiring
+res.robustness.summary$rewiring <- c("0", "M", "P", "T", "MP", "TP") # add code for rewiring
 res.robustness.summary
 
 # Plot the results

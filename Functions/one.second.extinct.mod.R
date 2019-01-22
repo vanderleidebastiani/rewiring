@@ -4,15 +4,19 @@
 # rewiring - Allow rewiring (default rewiring = FALSE)
 # probabilities.rewiring1 - A matrix with probabilities of rewiring, must be the same dimensions of web (default probabilities.rewiring1 = NULL). See step ii?
 # probabilities.rewiring2 - A matrix with probabilities of rewiring, must be the same dimensions of web (default probabilities.rewiring2 = NULL). See step iii?
-# method.rewiring = Type of method used to trial rewiring, partial match to "one.try.single.interaction", "one.try.n.interactions", "multiple.trials" (Default method.rewiring = "one.try.n.interactions"). See text?
+# Old - method.rewiring = Type of method used to trial rewiring, partial match to "one.try.single.interaction", "one.try.n.interactions", "multiple.trials" (Default method.rewiring = "one.try.n.interactions"). See text?
+# method.rewiring"one.try.single.partner", "multiple.trials.single.partner", "multiple.trials.multiples.partners", "one.try.each.partner" or "multiple.trials.each.partner"
+# Old - keep.trying = Logical argument to specify if keep trying another parter until rewiring the species only for the methods "one.try.single.interaction" and "one.try.n.interactions" (default keep.trying = FALSE).
 one.second.extinct.mod <- function(web, participant = "higher", method = "abun", ext.row = NULL, ext.col = NULL, 
                                    rewiring = FALSE, probabilities.rewiring1 = NULL, probabilities.rewiring2 = NULL,
-                                   method.rewiring = "one.try.n.interactions") {
+                                   # method.rewiring = "one.try.n.interactions", keep.trying = FALSE) {
+                                   method.rewiring = "one.try.single.partner") {
   dead <- matrix(nrow = 0, ncol = 3)
   colnames(dead) <- c("no", "ext.lower", "ext.higher")
   m2 <- web
   i <- 1
-  METHOD.REWIRING = c("one.try.single.interaction", "one.try.n.interactions", "multiple.trials")
+  # METHOD.REWIRING = c("one.try.single.interaction", "one.try.n.interactions", "multiple.trials")
+  METHOD.REWIRING = c("one.try.single.partner", "multiple.trials.single.partner", "multiple.trials.multiples.partners", "one.try.each.partner", "multiple.trials.each.partner")
   method.rewiring <- pmatch(method.rewiring, METHOD.REWIRING)
   if (length(method.rewiring) > 1) {
     stop("\n Only one argument is accepted in method.rewiring \n")
@@ -20,9 +24,21 @@ one.second.extinct.mod <- function(web, participant = "higher", method = "abun",
   if (is.na(method.rewiring)) {
     stop("\n Invalid method.rewiring \n")
   }
+  if(method.rewiring == 4 | method.rewiring == 5){
+    keep.trying <- TRUE
+  } else {
+    keep.trying <- FALSE
+  }
+  method.rewiring <- ifelse(method.rewiring == 4, 1, ifelse(method.rewiring == 5, 2, method.rewiring))
   if(rewiring){
     if(any(web%%1!=0)){
       stop("\n If rewiring is TRUE the web must must contain only integers \n")
+    }
+    if(is.null(rownames(web)) | is.null(colnames(web))){
+      stop("\n If rewiring is TRUE the web must must rownames and colnames\n")
+    }
+    if(is.null(probabilities.rewiring1) | is.null(probabilities.rewiring2)){
+      stop("\n If rewiring is TRUE probabilities.rewiring1 and probabilities.rewiring1 must not be NULL\n")
     }
   }
   repeat {
@@ -34,9 +50,9 @@ one.second.extinct.mod <- function(web, participant = "higher", method = "abun",
         sp.surv <- seq_len(nrow(ext.temp$web))
         sp.surv <- sp.surv[-1*which(rownames(ext.temp$web) %in% sp.ext)]
         for(jj in sp.try.rewiring){
+          sp.surv.temp <- sp.surv
           go <- TRUE
           m <- 0
-          sp.surv.prob1 <- probabilities.rewiring1[sp.surv, jj]
           if(method.rewiring == 1 | method.rewiring == 3){
             trials <- 1
           } else {
@@ -44,16 +60,29 @@ one.second.extinct.mod <- function(web, participant = "higher", method = "abun",
           }
           while (go) {
             m <- m+1
-            sp.add <- sample(as.character(sp.surv), 1, prob = sp.surv.prob1)
+            sp.surv.prob1 <- probabilities.rewiring1[sp.surv.temp, jj]
+            sp.add <- sample(as.character(sp.surv.temp), 1, prob = sp.surv.prob1)
             sp.surv.prob2 <- probabilities.rewiring2[as.numeric(sp.add), jj]
             n.add <- rbinom(1, trials, sp.surv.prob2)
             if(n.add>0){
               ext.temp$web[as.numeric(sp.add), jj] <- ext.temp$web[as.numeric(sp.add), jj]+n.add
             }
             if(method.rewiring == 1 | method.rewiring == 2){
-              go <- FALSE
+              if(!keep.trying){
+                go <- FALSE  
+              } else{
+                if((method.rewiring == 1 & n.add>0) | (method.rewiring == 2 & n.add == trials)){
+                  go <- FALSE
+                } else{
+                  sp.surv.temp <- sp.surv.temp[-1*which(sp.surv.temp%in% sp.add)]
+                  trials <- trials-n.add
+                  if(length(sp.surv.temp)<1){
+                    go <- FALSE
+                  }
+                }
+              }
             } else {
-              if(trials == m){
+              if(ext.temp$rexcl[1, jj] == m){
                 go <- FALSE
               }
             }
@@ -66,9 +95,9 @@ one.second.extinct.mod <- function(web, participant = "higher", method = "abun",
         sp.surv <- seq_len(ncol(ext.temp$web))
         sp.surv <- sp.surv[-1*which(colnames(ext.temp$web) %in% sp.ext)]
         for(ii in sp.try.rewiring){
+          sp.surv.temp <- sp.surv
           go <- TRUE
           m <- 0
-          sp.surv.prob1 <- probabilities.rewiring1[ii, sp.surv]
           if(method.rewiring == 1 | method.rewiring == 3){
             trials <- 1
           } else {
@@ -76,16 +105,29 @@ one.second.extinct.mod <- function(web, participant = "higher", method = "abun",
           }
           while (go) {
             m <- m+1
-            sp.add <- sample(as.character(sp.surv), 1, prob = sp.surv.prob1)
+            sp.surv.prob1 <- probabilities.rewiring1[ii, sp.surv.temp]
+            sp.add <- sample(as.character(sp.surv.temp), 1, prob = sp.surv.prob1)
             sp.surv.prob2 <- probabilities.rewiring2[ii, as.numeric(sp.add)]
             n.add <- rbinom(1, trials, sp.surv.prob2)
             if(n.add>0){
               ext.temp$web[ii, as.numeric(sp.add)] <- ext.temp$web[ii, as.numeric(sp.add)]+n.add
             }
             if(method.rewiring == 1 | method.rewiring == 2){
-              go <- FALSE
+              if(!keep.trying){
+                go <- FALSE  
+              } else{
+                if((method.rewiring == 1 & n.add>0) | (method.rewiring == 2 & n.add == trials)){
+                  go <- FALSE
+                } else{
+                  sp.surv.temp <- sp.surv.temp[-1*which(sp.surv.temp%in% sp.add)]
+                  trials <- trials-n.add
+                  if(length(sp.surv.temp)<1){
+                    go <- FALSE
+                  }
+                }
+              }
             } else {
-              if(trials == m){
+              if(ext.temp$cexcl[ii, 1] == m){
                 go <- FALSE
               }
             }
