@@ -1,4 +1,4 @@
-# Small function to facilitate the calc of 95 percent confidence interval
+# Small function to facilitate the calculation of 95 percent confidence interval
 IC <- function(X){
 	a <- mean(X)
 	s <- sd(X)
