@@ -4,6 +4,6 @@ IC <- function(X){
 	s <- sd(X)
 	n <- length(X)
 	error <- qt(0.975, df = n-1)*s/sqrt(n)
-	res <- c(mean = a, lower = a-error, upper = a+error)
+	res <- c(mean = a, sd = s, lower = a-error, upper = a+error)
 	return(res)
 }
