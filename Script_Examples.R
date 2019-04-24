@@ -100,10 +100,10 @@ one
 MP <- morphological*temporal # Hadamard product
 MP
 
-# Probability fussy trait similarity to hummingbirds and phenological overlap
+# Probability fuzzy trait similarity to hummingbirds and phenological overlap
 ThP <- Th*temporal
 
-# Probability fussy trait similarity to hummingbirds and phenological overlap
+# Probability fuzzy trait similarity to hummingbirds and phenological overlap
 TplP <- Tpl*temporal
 
 ### Simule secondary extinctions in networks 
