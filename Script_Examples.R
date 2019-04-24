@@ -81,11 +81,11 @@ pl_morph_dist
 h_morph_dist <- as.matrix(vegdist(h_morph, method = "euclidean", na.rm = TRUE)) # Euclidean distance between species
 h_morph_dist
 
-# Probability fussy trait similarity to plant
+# Probability fuzzy trait similarity to plant
 Tpl <- t(matrix.p1(t(network), pl_morph_dist)$matrix.P)
 Tpl
 
-# Probability fussy trait similarity to hummingbirds
+# Probability fuzzy trait similarity to hummingbirds
 Th <- matrix.p1(network, h_morph_dist)$matrix.P
 Th
 
