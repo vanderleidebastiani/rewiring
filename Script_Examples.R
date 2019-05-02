@@ -1,10 +1,10 @@
 ### Examples
 
-### Requerid pacakges
+### Required pacakges
 require(bipartite)
 require(plotrix) # for ploting
 
-### Load the functions
+### Load functions
 
 source("./Functions/extinction.mod.R")
 source("./Functions/one.second.extinct.mod.R")
@@ -30,7 +30,7 @@ pl_abund
 h_morph <- as.matrix(read.csv("./DataSetExamples/SantaVirginia/SantaVirginia_dataset_h_morph.csv", row.names = 1))
 h_morph
 
-# Trait (Cololla lenght) of plants
+# Trait (Corolla length) of plants
 pl_morph <- as.matrix(read.csv("./DataSetExamples/SantaVirginia/SantaVirginia_dataset_pl_morph.csv", row.names = 1))
 pl_morph
 
@@ -138,7 +138,7 @@ RES.with.rewiring.T <- replicate(nrep, one.second.extinct.mod(network, participa
 RES.with.rewiring.MP <- replicate(nrep, one.second.extinct.mod(network, participant = participant, method = method, rewiring = TRUE, probabilities.rewiring1 = probabilities.rewiring1, probabilities.rewiring2 = MP, method.rewiring = method.rewiring), simplify = FALSE)
 RES.with.rewiring.TP <- replicate(nrep, one.second.extinct.mod(network, participant = participant, method = method, rewiring = TRUE, probabilities.rewiring1 = probabilities.rewiring1, probabilities.rewiring2 = TplP, method.rewiring = method.rewiring), simplify = FALSE)
 
-## Calculates robustness to species extinctions
+## Calculate robustness to species extinctions
 RES.robustness.without.rewiring <- sapply(RES.without.rewiring, robustness)
 RES.robustness.with.rewiring.M <- sapply(RES.with.rewiring.M, robustness)
 RES.robustness.with.rewiring.P <- sapply(RES.with.rewiring.P, robustness)
