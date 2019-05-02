@@ -1,9 +1,10 @@
-# Small function to facilitate the calculation of 95 percent confidence interval
-IC <- function(X){
-	a <- mean(X)
-	s <- sd(X)
-	n <- length(X)
-	error <- qt(0.975, df = n-1)*s/sqrt(n)
-	res <- c(mean = a, sd = s, lower = a-error, upper = a+error)
-	return(res)
+# Small function to facilitate the calculation confidence interval (default conf.level = 0.95)
+IC <- function(X, conf.level = 0.95){
+  m <- mean(X)
+  s <- sd(X)
+  n <- length(X)
+  se <- s/sqrt(n)
+  error <- qt((1-conf.level)/2, df = n-1, lower.tail = FALSE)*se
+  res <- c(mean = m, sd = s, lower = m-error, upper = m+error)
+  return(res)
 }

@@ -1,5 +1,5 @@
 # Small code extracted of the "second.extinct" function to calc mean of multiple replicates of extinction sequence and set specific attributes to object returned
-# This way robustness function can be apply
+# This way robustness function can be apply in a list of results returned by the function "one.second.extinct.mod"
 calc.mean.one.second.extinct.mod <- function(o){
   lengths <- sapply(o, nrow)
   z <- o[[which.max(lengths)]]
@@ -13,7 +13,6 @@ calc.mean.one.second.extinct.mod <- function(o){
   out[, 1] <- 1:max(lengths)
   participant <- attr(o,"exterminated")
   class(out) <- "bipartite"
-  # attr(out, "exterminated") <- c("both", "lower", "higher")[pmatch(participant, c("both", "lower", "higher"))]
   attr(out, "exterminated") <- attr(o[[1]],"exterminated")
   return(out)
 }

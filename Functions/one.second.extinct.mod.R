@@ -1,21 +1,17 @@
-# Small change in internal function "one.second.extinct" of bipartite package
-# The difference is that allow rewiring the interation after each step of extinction
+# Small change in internal function "one.second.extinct" of bipartite package. The difference is that allow rewiring the interation after each step of extinction
+# The arguments are the same of "one.second.extinct" function and additional argumets are described below.
 # New arguments:
-# rewiring - Allow rewiring (default rewiring = FALSE)
-# probabilities.rewiring1 - A matrix with probabilities of rewiring, must be the same dimensions of web (default probabilities.rewiring1 = NULL). See step ii?
-# probabilities.rewiring2 - A matrix with probabilities of rewiring, must be the same dimensions of web (default probabilities.rewiring2 = NULL). See step iii?
-# Old - method.rewiring = Type of method used to trial rewiring, partial match to "one.try.single.interaction", "one.try.n.interactions", "multiple.trials" (Default method.rewiring = "one.try.n.interactions"). See text?
-# method.rewiring"one.try.single.partner", "multiple.trials.single.partner", "multiple.trials.multiples.partners", "one.try.each.partner" or "multiple.trials.each.partner"
-# Old - keep.trying = Logical argument to specify if keep trying another parter until rewiring the species only for the methods "one.try.single.interaction" and "one.try.n.interactions" (default keep.trying = FALSE).
+# rewiring - Logical argument to specify if allow rewiring (default rewiring = FALSE).
+# probabilities.rewiring1 - A matrix with probabilities of rewiring, must be the same dimensions of web. See section Methods for details. This matrix is required in step ii of framework  (default probabilities.rewiring1 = NULL).
+# probabilities.rewiring2 - A matrix with probabilities of rewiring, must be the same dimensions of web. See section Methods for details. This matrix is required in step iii of framework (default probabilities.rewiring2 = NULL).
+# method.rewiring = Type of method used to trial rewiring, partial match to "one.try.single.partner", "multiple.trials.single.partner", "multiple.trials.multiples.partners", "one.try.each.partner" and "multiple.trials.each.partner". See section Methods for details  (default method.rewiring = "one.try.single.partner").
 one.second.extinct.mod <- function(web, participant = "higher", method = "abun", ext.row = NULL, ext.col = NULL, 
                                    rewiring = FALSE, probabilities.rewiring1 = NULL, probabilities.rewiring2 = NULL,
-                                   # method.rewiring = "one.try.n.interactions", keep.trying = FALSE) {
                                    method.rewiring = "one.try.single.partner") {
   dead <- matrix(nrow = 0, ncol = 3)
   colnames(dead) <- c("no", "ext.lower", "ext.higher")
   m2 <- web
   i <- 1
-  # METHOD.REWIRING = c("one.try.single.interaction", "one.try.n.interactions", "multiple.trials")
   METHOD.REWIRING = c("one.try.single.partner", "multiple.trials.single.partner", "multiple.trials.multiples.partners", "one.try.each.partner", "multiple.trials.each.partner")
   method.rewiring <- pmatch(method.rewiring, METHOD.REWIRING)
   if (length(method.rewiring) > 1) {
