@@ -2,7 +2,7 @@
 
 ### Required pacakges
 require(bipartite)
-require(plotrix) # for ploting
+require(plotrix) # for plotting
 
 ### Load functions
 
@@ -81,7 +81,7 @@ pl_morph_dist
 h_morph_dist <- as.matrix(vegdist(h_morph, method = "euclidean", na.rm = TRUE)) # Euclidean distance between species
 h_morph_dist
 
-# Probability fuzzy trait similarity to plant
+# Probability based on fuzzy trait similarity to plant
 Tpl <- t(matrix.p1(t(network), pl_morph_dist)$matrix.P)
 Tpl
 
@@ -100,13 +100,13 @@ one
 MP <- morphological*temporal # Hadamard product
 MP
 
-# Probability fuzzy trait similarity to hummingbirds and phenological overlap
+# Probability based on fuzzy trait similarity to hummingbirds and phenological overlap
 ThP <- Th*temporal
 
-# Probability fuzzy trait similarity to hummingbirds and phenological overlap
+# Probability based on fuzzy trait similarity to hummingbirds and phenological overlap
 TplP <- Tpl*temporal
 
-### Simule secondary extinctions in networks 
+### Simulate secondary extinctions in networks 
 
 ## Define the number of replications
 nrep <- 1000
