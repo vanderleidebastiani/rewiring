@@ -1,4 +1,4 @@
-# Small change in internal function "one.second.extinct" of bipartite package. The difference is that allow rewiring the interation after each step of extinction
+# Small change in internal function "one.second.extinct" of bipartite package. The change allows rewiring of interations after each step of extinction
 # The arguments are the same of "one.second.extinct" function and additional argumets are described below.
 # New arguments:
 # rewiring - Logical argument to specify if allow rewiring (default rewiring = FALSE).
