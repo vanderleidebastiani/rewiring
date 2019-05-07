@@ -1,5 +1,5 @@
-# Small code extracted of the "second.extinct" function to calc mean of multiple replicates of extinction sequence and set specific attributes to object returned
-# This way robustness function can be apply in a list of results returned by the function "one.second.extinct.mod"
+# Code extracted from the "second.extinct" function to calcultate mean of multiple replicates of extinction sequence and set specific attributes to the object returned
+# This way robustness function can be applied to a list of results returned by the function "one.second.extinct.mod"
 calc.mean.one.second.extinct.mod <- function(o){
   lengths <- sapply(o, nrow)
   z <- o[[which.max(lengths)]]
