@@ -1,4 +1,4 @@
-# Small function to facilitate the calculation confidence interval (default conf.level = 0.95)
+# Function to facilitate the calculation confidence interval (default conf.level = 0.95)
 IC <- function(X, conf.level = 0.95){
   m <- mean(X)
   s <- sd(X)
