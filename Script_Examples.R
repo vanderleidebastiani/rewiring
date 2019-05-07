@@ -14,15 +14,15 @@ source("./Functions/IC.R") # calc of 95 percent confidence interval
 
 ### Load the data
 
-# Network - mutualistic plant-hummingbird networks
+# Network - mutualistic plant-hummingbird network (from Vizentin-Bugoni et al. (2016)  https://doi.org/10.1111/1365-2656.12459)
 network <- as.matrix(read.csv("./DataSetExamples/SantaVirginia/SantaVirginia_dataset_network.csv", row.names = 1))
 network
 
-# Raw abundances of hummingbirds
+# Raw hummingbirds abundances
 h_abund <- as.matrix(read.csv("./DataSetExamples/SantaVirginia/SantaVirginia_dataset_h_abund.csv", row.names = 1))
 h_abund
 
-# Raw abundances of plants
+# Raw plant abundance
 pl_abund <- as.matrix(read.csv("./DataSetExamples/SantaVirginia/SantaVirginia_dataset_pl_abund.csv", row.names = 1))
 pl_abund
 
@@ -30,7 +30,7 @@ pl_abund
 h_morph <- as.matrix(read.csv("./DataSetExamples/SantaVirginia/SantaVirginia_dataset_h_morph.csv", row.names = 1))
 h_morph
 
-# Trait (Corolla length) of plants
+# Trait (corolla depth) of plants
 pl_morph <- as.matrix(read.csv("./DataSetExamples/SantaVirginia/SantaVirginia_dataset_pl_morph.csv", row.names = 1))
 pl_morph
 
@@ -73,11 +73,11 @@ temporal
 
 ## Fuzzy sets
 
-# Distance between plant species
+# Distance between pairs of plant species
 pl_morph_dist <- as.matrix(vegdist(pl_morph, method = "euclidean", na.rm = TRUE)) # Euclidean distance between species
 pl_morph_dist
 
-# Distance between hummingbirds species
+# Distance between pairs of hummingbirds species
 h_morph_dist <- as.matrix(vegdist(h_morph, method = "euclidean", na.rm = TRUE)) # Euclidean distance between species
 h_morph_dist
 
@@ -89,7 +89,7 @@ Tpl
 Th <- matrix.p1(network, h_morph_dist)$matrix.P
 Th
 
-## All equal to one
+## All equals one
 one <- network
 one[] <- 1
 one
@@ -115,19 +115,19 @@ nrep <- 1000
 participant <- "lower"
 participant
 
-## Define method to extinct
+## Define method to remove species
 method <- "random"
 method
 
-## Define method to rewiring
+## Define method of rewiring
 method.rewiring <- "one.try.single.partner"
 method.rewiring
 
-## Define the matrices of probability of rewiring
+## Define the matrices of probability based on which rewiring will take place
 
 # To plants loss ("lower" participants)
-probabilities.rewiring1 <- abundance_pl # relative abundances of plants
-probabilities.rewiring1 # Probability of choice of a potential partner 
+probabilities.rewiring1 <- abundance_pl # plant relative abundances
+probabilities.rewiring1 # Probability of choice of a potential partner
 
 ## Run secondary extinctions with specified parameters (results are list)
 # The argument probabilities.rewiring2 to specify the probabilities of rewiring 
@@ -160,7 +160,7 @@ res.robustness.summary <- as.data.frame(t(sapply(res.robustness, IC)))
 res.robustness.summary$rewiring <- c("0", "M", "P", "T", "MP", "TP") # add code for rewiring
 res.robustness.summary
 
-# Plot the results
+# Plot results
 plot(NA, xlim = c((1-0.5),(nrow(res.robustness.summary)+0.5)), ylim = c(0.8,1), 
      type = "n", las = 1, xaxt ="n", 
      ylab = "Robustness", xlab ="Mode of rewiring",
