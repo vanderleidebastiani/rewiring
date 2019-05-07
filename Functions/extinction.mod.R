@@ -1,4 +1,4 @@
-# Small change in internal function "extinction" of bipartite package
+# Small change in the internal function "extinction" of the bipartite package
 # The diference is that return rexcl and cexcl (default NULL to both) with complele row (rexcl) or column (cexcl) extinct step by step
 extinction.mod <- function (web, participant = "both", method = "random", ext.row = NULL, ext.col = NULL) 
 {
