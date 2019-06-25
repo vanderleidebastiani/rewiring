@@ -1,5 +1,5 @@
 # Small change in the internal function "one.second.extinct" of the bipartite package. The change allows rewiring of interations after each step of extinction
-# The arguments are the same of "one.second.extinct" function and additional argumets are described below.
+# The arguments are the same of "one.second.extinct" function and additional arguments are described below.
 # New arguments:
 # rewiring - Logical argument to specify if allow rewiring (default rewiring = FALSE).
 # probabilities.rewiring1 - A matrix with probabilities of rewiring, must be the same dimensions of the web (i.e. network). See section Methods in Vizentin-Bugoni et al. [in review] for details). This matrix is required in step ii of framework (default probabilities.rewiring1 = NULL).
