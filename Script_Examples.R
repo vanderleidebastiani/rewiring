@@ -47,7 +47,7 @@ pl_phen
 ## Abundances
 
 # Relative abundances of pairwise bird and plant species
-abundance <- (pl_abund/sum(pl_abund))%*%t(h_abund/sum(h_abund))
+abundance <- pl_abund%*%t(h_abund)
 abundance
 
 # Relative abundances of plants
@@ -169,5 +169,5 @@ axis(1, at = 1:nrow(res.robustness.summary), labels = res.robustness.summary$rew
 plotCI(1:nrow(res.robustness.summary), res.robustness.summary$mean, 
        ui = res.robustness.summary$upper, 
        li = res.robustness.summary$lower, 
-       add = TRUE, pch = 19) # mean and confidence intervals
+       add = TRUE, pch = 19, cex = 0.7) # mean and confidence intervals
 abline(h = c(res.robustness.summary$lower[1], res.robustness.summary$upper[1]), lty = 3) # lines of confidence interval to scenario without rewiring
