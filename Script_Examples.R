@@ -68,7 +68,7 @@ morphological
 
 # Relative temporal coexistence (phenological overlap)
 temporal <- pl_phen%*%t(h_phen)
-temporal <- temporal/max(temporal)
+temporal <- temporal/max(temporal) # In our case 'max(temporal)' equals 24 as at least two partners overlap thoughout the entire study (i.e. 24 months). If it is not the case, users must specify how many temporal sampling replicates (e.g., months, weeks) the dataset includes.
 temporal
 
 ## Fuzzy sets
@@ -103,7 +103,7 @@ MP
 # Probability based on fuzzy trait similarity to hummingbirds and phenological overlap
 ThP <- Th*temporal
 
-# Probability based on fuzzy trait similarity to hummingbirds and phenological overlap
+# Probability based on fuzzy trait similarity to plants and phenological overlap
 TplP <- Tpl*temporal
 
 ### Simulate secondary extinctions in networks 
