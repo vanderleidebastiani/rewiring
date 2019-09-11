@@ -2,8 +2,8 @@
 
 R codes used in 
 
-"Including rewiring in the estimation of the robustness of mutualistic networks" (in review)
+"Including rewiring in the estimation of the robustness of mutualistic networks"
 
-by Jeferson Vizentin-Bugoni, Vanderlei J. Debastiani, Vinicius A. G. Bastazini, Pietro K. Maruyama, Jinelle H. Sperry
+by Jeferson Vizentin-Bugoni, Vanderlei J. Debastiani, Vinicius A. G. Bastazini, Pietro K. Maruyama and Jinelle H. Sperry. Methods in Ecology and Evolution. 
 
 See original article for details.
