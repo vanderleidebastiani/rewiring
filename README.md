@@ -6,6 +6,6 @@ R codes used in
 
 "Including rewiring in the estimation of the robustness of mutualistic networks"
 
-by Jeferson Vizentin-Bugoni, Vanderlei J. Debastiani, Vinicius A. G. Bastazini, Pietro K. Maruyama and Jinelle H. Sperry. Methods in Ecology and Evolution. 
+by Jeferson Vizentin-Bugoni, Vanderlei J. Debastiani, Vinicius A. G. Bastazini, Pietro K. Maruyama and Jinelle H. Sperry. Methods in Ecology and Evolution. [![DOI](https://doi.org/10.1111/2041-210X.13306)
 
 See original article for details.
